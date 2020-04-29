@@ -19,11 +19,20 @@ questions like the ones below, but feel free to add more information:**
 
 **a. What does your database schema look like?**
 
-My database would consist of users and recipes  
+table users <br>
+id SERIAL PRIMARY KEY <br>
+username TEXT NOT NULL UNIQUE<br>
+password TEXT NOT NULL<br>
+
+table recipes<br>
+id SERIAL PRIMARY KEY<br>
+name TEXT NOT NULL<br>
+ingredients TEXT NOT NULL<br>
+macro_count TEXT NOT NULL<br>
 
 **b. What kinds of issues might you run into with your API?**
 
-Ingredients not being in the API or nutrition information being wrong coming back from the API
+Ingredients not being in the API or nutrition information being wrong coming back from the API. The API being down for any reason. The API not acting in the way I would want it to. 
 
 **c. Is there any sensitive information you need to secure?**
 
@@ -35,7 +44,7 @@ A macro counter with a graph to show the breakdown, a user account creation to s
 
 **e. What will the user flow look like?**
 
-Enter site by either creating an account or signing in. Either look at a list of already entered recipes or enter a new one. Take the recipe from another site by copying and pasting into a form or manually entering the recipe. Then have the ability to save that recipe. 
+[https://drive.google.com/file/d/1V3GhjlpZclqkCf8kV3BsECtNicYw6ckB/view?usp=sharing](https://drive.google.com/file/d/1V3GhjlpZclqkCf8kV3BsECtNicYw6ckB/view?usp=sharing)
 
 **f. What features make your site more than CRUD? Do you have any stretch
 goals?**
