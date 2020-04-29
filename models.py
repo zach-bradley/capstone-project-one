@@ -13,9 +13,10 @@ class User(db.Model):
  id = db.Column(db.Integer, primary_key=True, autoincrement=True)
  username = db.Column(db.Test, nullable=False, unique=True)
  password = db.Column(db.Text, nullable=False)
+ name = db.Column(db.Text)
 
  def __repr__(self):
-  return f"<User {self.id}>"
+  return f"<User {self.id} {self.username} {self.password} {self.name}>"
 
 class Recipe(db.Model):
  """Model for recipes"""
@@ -28,6 +29,6 @@ class Recipe(db.Model):
 
 
  def __repr__(self):
-  return f"<Recipes {self.id}>"
+  return f"<Recipes {self.id} {self.name} {self.ingredients} {self.macro_count}>"
 
   

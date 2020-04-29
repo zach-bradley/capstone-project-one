@@ -23,6 +23,7 @@ table users <br>
 id SERIAL PRIMARY KEY <br>
 username TEXT NOT NULL UNIQUE<br>
 password TEXT NOT NULL<br>
+name TEXT<br>
 
 table recipes<br>
 id SERIAL PRIMARY KEY<br>
