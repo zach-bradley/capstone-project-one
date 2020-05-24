@@ -33,11 +33,11 @@ macro_count TEXT NOT NULL<br>
 
 **b. What kinds of issues might you run into with your API?**
 
-Ingredients not being in the API or nutrition information being wrong coming back from the API. The API being down for any reason. The API not acting in the way I would want it to. 
+Ingredients not being in the API or nutrition information being wrong coming back from the API. The API being down for any reason. The API not acting in the way I would want it to(crashing). 
 
 **c. Is there any sensitive information you need to secure?**
 
-The API key and user information. 
+The API key for the database. User information such as password and other private information coming from health apps. 
 
 **d. What functionality will your app include?**
 
