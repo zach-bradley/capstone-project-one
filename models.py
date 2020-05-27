@@ -1,6 +1,9 @@
+
+from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
+bcrypt = Bcrypt()
 
 def connect_db(app):
  db.app=app
@@ -11,27 +14,26 @@ class User(db.Model):
 
   __tablename__ = "users"
   id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-  username = db.Column(db.Test, nullable=False, unique=True)
+  username = db.Column(db.Text, nullable=False, unique=True)
   password = db.Column(db.Text, nullable=False)
   email = db.Column(db.Text, nullable=False)
-  recipes = db.relationship("Recipe")
+  recipes = db.relationship("Recipe", backref="user")
 
   def __repr__(self):
-  return f"<User #{self.id} {self.username}, {self.email}>"
+    return f"<User #{self.id} {self.username}, {self.email}>"
 
   @classmethod
-  def signup(cls, username, email, password, image_url):
+  def signup(cls, username, email, password):
       """Sign up user.Hashes password and adds user to system."""
       hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
       user = User(
           username=username,
           email=email,
           password=hashed_pwd,
-          image_url=image_url,
       )
 
-        db.session.add(user)
-        return user
+      db.session.add(user)
+      return user
 
   @classmethod
   def authenticate(cls, username, password):
@@ -55,7 +57,9 @@ class Recipe(db.Model):
   fat = db.Column(db.Text)
   carbs = db.Column(db.Text)
   protein = db.Column(db.Text)
-  ingredients = db.relationship("Ingredient")
+  user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+  ingredients = db.relationship("Ingredient", backref="recipe")
+
 
   def __repr__(self):
    return f"<Recipes {self.id} {self.name}>"
@@ -67,5 +71,6 @@ class Ingredient(db.Model):
 
   id = db.Column(db.Integer, primary_key=True, autoincrement=True)
   amount = db.Column(db.Text, nullable=False)
+  recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.id"))
 
   

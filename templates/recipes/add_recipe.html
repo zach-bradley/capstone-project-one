@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-md-center">
+  <div class="col-md-7 col-lg-5">
+    <h2 class="join-message">Add your recipe</h2>
+    <form autocomplete="off" id="addForm">
+
+      <input type="text" name="name" id="name" class="form-control my-2" placeholder="Name for recipe">
+      <textarea name="ingredients" id="ingredients" cols="30" rows="10" class="form-control my-2" placeholder="Ingredients. Put each ingredient on a new line"></textarea>
+
+      <button class="btn btn-success btn-lg" type="submit">Add</button>
+      <a href="/users/{{session['username']}}" class="btn btn-danger btn-lg text-light">Cancel</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

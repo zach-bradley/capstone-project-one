@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+  <div class="row">
+    <div class="col-7">
+      <h4>{{user.username}}</h4>
+      <h3></h3>
+    </div>
+    <div class="col-5">
+      <a href="/users/{{user.username}}/recipes/add" class="btn btn-primary">Add Recipe</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
