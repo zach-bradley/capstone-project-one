@@ -17,6 +17,8 @@ class User(db.Model):
   username = db.Column(db.Text, nullable=False, unique=True)
   password = db.Column(db.Text, nullable=False)
   email = db.Column(db.Text, nullable=False)
+  name = db.Column(db.Text)
+  weight = db.Column(db.Integer)
   recipes = db.relationship("Recipe", backref="user")
 
   def __repr__(self):
@@ -58,7 +60,7 @@ class Recipe(db.Model):
   carbs = db.Column(db.Text)
   protein = db.Column(db.Text)
   user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
-  ingredients = db.relationship("Ingredient", backref="recipe")
+  ingredients = db.relationship("Ingredient", backref="recipe", cascade="all, delete-orphan")
 
 
   def __repr__(self):
@@ -71,6 +73,6 @@ class Ingredient(db.Model):
 
   id = db.Column(db.Integer, primary_key=True, autoincrement=True)
   amount = db.Column(db.Text, nullable=False)
-  recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.id"))
+  recipe_id = db.Column(db.Integer, db.ForeignKey("recipes.id", ondelete="CASCADE"), nullable=False)
 
   

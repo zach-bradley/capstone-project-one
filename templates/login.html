@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="row justify-content-md-center">
+<div class="row justify-content-md-center container py-5 rounded border border-dark bg-light">
   <div class="col-md-7 col-lg-5">
     <h2 class="join-message">Login Here</h2>
-    <form></form>
+    <form method="POST">
       {{ form.hidden_tag() }}
-
       {% for field in form if field.widget.input_type != 'hidden' %}
         {% for error in field.errors %}
           <span class="text-danger">{{ error }}</span>
@@ -13,7 +12,7 @@
         {{ field(placeholder=field.label.text, class="form-control") }}
       {% endfor %}
 
-      <button class="btn btn-primary btn-lg btn-block">Login</button>
+      <button class="btn btn-primary btn-lg btn-block mt-2">Login</button>
     </form>
   </div>
 </div>

@@ -1,32 +1,104 @@
-// "https://api.edamam.com/api/nutrition-details?app_id=${APP_ID}&app_key={APP_KEY}"
-// title, ingr needed in json
-const APP_ID = '0720c12f';
-const APP_KEY = '2536f33f4e60d575d9e90d9c8012fe87';
-const API_URL = 'https://api.edamam.com/api/nutrition-details';
+let $calories =  parseInt($('#calories').attr("data-amount"))
+let $carbs = parseInt($('#carbs').attr("data-amount"))
+let $fat = parseInt($('#fat').attr("data-amount"))
+let $protein = parseInt($('#fat').attr("data-amount"))
 
-$form = $("#addForm");
+let total = $carbs + $fat + $protein;
+let list = [$carbs, $fat, $protein]
 
-async function handleData(evt){
-  evt.preventDefault()
-  let name =  $("#name").val()
-  let ingredients = $("#ingredients").val()
-  let arrIngredients = ingredients.split(/\n/)
+let makePie = function(){
+  let $div = $("#pie");
+  const width = $div[0]['offsetWidth'];
+  const height = $div[0]["offsetHeight"];
+  const margin = 40;
 
-  console.log(arrIngredients)
-  jsonToSend = {
-    "title" : name,
-    "ingr" : arrIngredients
+  const radius = Math.min(width, height) / 2 - margin;
+
+  let svg = d3.select('#pie')
+    .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+    .append("g")
+      .attr("transform", "translate(" + width / 2 + "," +height / 2 + ")");
+
+  let data = {
+    "fat" : $fat,
+    "carbs" : $carbs,
+    "protein" : $protein
   }
-  let response = await axios.post(`https://api.edamam.com/api/nutrition-details?app_id=${APP_ID}&app_key=${APP_KEY}`, jsonToSend)
-  let pulledData = {
-    "name" : name,
-    "ingredients" : arrIngredients,
-    "calories" : Math.floor(response['data']['calories']),
-    "carbs" : Math.floor(response['data']['totalNutrients']['CHOCDF']['quantity'])+"g",
-    "fat" : Math.floor(response['data']['totalNutrients']['FAT']['quantity'])+"g",
-    "protein" : Math.floor(response['data']['totalNutrients']['PROCNT']['quantity'])+"g"
-  }
-  console.log(pulledData)
+
+  let color = d3.scaleOrdinal()
+    .domain(data)
+    .range(["#fffc2e", "#2e3fff", "#ff2934"])
+
+  let pie = d3.pie()
+    .value(d => d.value)
+
+  let data_ready = pie(d3.entries(data))
+
+  svg
+    .selectAll('whatever')
+    .data(data_ready)
+    .enter()
+    .append('path')
+    .attr('d', d3.arc()
+      .innerRadius(50)        
+      .outerRadius(radius)
+    )
+    .attr('fill', d => color(d.data.key))
+    .attr("stroke", "black")
+    .style("stroke-width", "2px")
+    .style("opacity", 0.7)
+
+  let arc = d3.arc()
+    .innerRadius(radius * 0.6)       
+    .outerRadius(radius * 0.8)
+
+  let outerArc = d3.arc()
+    .innerRadius(radius * 1.2)
+    .outerRadius(radius * 1.2)
+
+    svg
+    .selectAll('allPolylines')
+    .data(data_ready)
+    .enter()
+    .append('polyline')
+      .attr("stroke", "black")
+      .style("fill", "none")
+      .attr("stroke-width", 1)
+      .attr('points', function(d) {
+        var posA = arc.centroid(d) 
+        var posB = outerArc.centroid(d) 
+        var posC = outerArc.centroid(d); 
+        var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2 
+        posC[0] = radius * 1.1 * (midangle < Math.PI ? 1 : -1); 
+        return [posA, posB, posC]
+      })
+
+  // Add the polylines between chart and labels:
+  svg
+    .selectAll('allLabels')
+    .data(data_ready)
+    .enter()
+    .append('text')
+      .text( d =>  d.data.key + ": " + d.data.value +"g" )
+      .attr('transform', function(d) {
+          var pos = outerArc.centroid(d);
+          var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
+          pos[0] = radius * 1.2 * (midangle < Math.PI ? 1 : -1);
+          return 'translate(' + pos + ')';
+      })
+      .style('text-anchor', function(d) {
+          var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
+          return (midangle < Math.PI ? 'start' : 'end')
+      })
+
+  svg.append('text')
+      .attr("text-anchor", "middle")
+      .text(total +"g total") 
 }
-
-$form.on("submit", handleData);
+$(document).ready(makePie)
+$(window).resize(function(){
+  $("svg").detach();
+  makePie();
+})

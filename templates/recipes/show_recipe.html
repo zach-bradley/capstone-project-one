@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-3 rounded border border-dark bg-light">
+  <div>
+    <a href="/users/{{session['username']}}"><i class="fa fa-arrow-left"></i> Back to all recipes</a>
+  </div>
+  <div>
+    <h1 class="d-inline">{{recipe.name}}</h1>
+    <a href="/users/{{session['username']}}/recipes/{{recipe.id}}/edit" class="badge badge-primary">Edit</a>    
+    <a href="/users/{{session['username']}}/recipes/{{recipe.id}}/delete" class="badge badge-danger">Delete</a>    
+  </div>
+
+  <div class="container-fluid">
+    <h4 class="mt-4">Ingredients:</h4>
+    <ul class="list-group">
+      {% for ingr in recipe.ingredients %}
+        <li class="list-group-item">{{ingr.amount}}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-sm-12">
+        <h4 class="mt-4">Nutrition:</h4>
+        <ul class="list-group">
+          <li class="list-group-item" data-amount={{recipe.calories}} id="calories">Calories: {{recipe.calories}}</li>
+          <li class="list-group-item" data-amount={{recipe.carbs}} id="carbs">Carbs: {{recipe.carbs}}g</li>
+          <li class="list-group-item" data-amount={{recipe.fat}} id="fat">Fat: {{recipe.fat}}g</li>
+          <li class="list-group-item" data-amount={{recipe.protein}} id="protein">Protein: {{recipe.protein}}g</li>
+        </ul>        
+      </div>
+      <div class="col-md-6 col-sm-12" id="pie">
+        <h4 class="mt-4 text-center">Nutrition Breakdown:</h4>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

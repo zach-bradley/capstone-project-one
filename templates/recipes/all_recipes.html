@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5 px-4 rounded border border-dark bg-light"> 
+    <h2 class="d-inline mr-3">Recipes</h2>
+    <a href="/users/{{user.username}}/recipes/add" class="btn btn-primary mb-3">Add Recipe</a>
+    <hr>
+    <div class="row">
+    {% for recipe in user.recipes %}
+      <div class="col-3 card m-2 border-dark">
+        <div class="card-body">
+          <h5 class="card-title">{{recipe.name}}</h5>
+          <p class="card-text">
+            Calories: {{recipe.calories}}
+          </p>
+          <a class="card-link" href="/users/{{user.username}}/recipes/{{recipe.id}}">More Info</a>           
+        </div>
+      </div>
+    {% endfor %}  
+    </div>
+</div>
+{% endblock %}

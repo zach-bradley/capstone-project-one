@@ -1,13 +1,33 @@
 {% extends 'base.html' %}
 {% block content %}
-<div>
-  <div class="row">
-    <div class="col-7">
-      <h4>{{user.username}}</h4>
-      <h3></h3>
-    </div>
-    <div class="col-5">
-      <a href="/users/{{user.username}}/recipes/add" class="btn btn-primary">Add Recipe</a>
+<div class="container py-5 px-5 rounded border border-dark bg-light">
+  <h2>User Details:</h2>
+  <hr>
+  <h4>Username: {{user.username}}</h4>
+  <h4>Name: {{user.name}}</h4>
+  <h4>Weight: {{user.weight}} lbs</h4>
+  <div class="container mt-3">
+    <a href="/users/{{user.username}}/edit" class="btn btn-primary">Edit</a>    
+    <button data-toggle="modal" data-target="#deleteProfile" class="btn btn-danger">Delete</button>    
+  </div>
+</div>
+
+<div class="modal fade" id="deleteProfile" tabindex="-1" role="dialog" aria-labelledby="deleteProfileLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteProfileLabel">Delete profile?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        This action is irreversible!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">I've changed my mind!</button>
+        <a href="/users/{{user.username}}/delete"class="btn btn-danger">Yes, Delete Profile</a>
+      </div>
     </div>
   </div>
 </div>

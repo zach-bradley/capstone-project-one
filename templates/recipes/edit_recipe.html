@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="row justify-content-md-center container-fluid py-5 rounded border border-dark bg-light">
+<div class="row justify-content-md-center py-5 rounded border border-dark bg-light">
   <div class="col-md-7 col-lg-5">
-    <h2 class="join-message">Add your recipe</h2>
-    <form method="POST" autocomplete="off" id="addForm">
+    <h2 class="join-message">Edit your recipe</h2>
+    <form method="POST" autocomplete="off">
       {{ form.hidden_tag() }}
 
       {% for field in form if field.widget.input_type != 'hidden' %}
@@ -13,8 +13,8 @@
         {{ field(placeholder=field.label.text, class="form-control my-2") }}
       {% endfor %}
 
-      <button class="btn btn-success btn-lg">Add</button>
-      <a href="/users/{{session['username']}}/recipes" class="btn btn-danger btn-lg text-light">Cancel</a>
+      <button class="btn btn-success btn-lg">Submit</button>
+      <a href="/users/{{session['username']}}/recipes/{{recipe.id}}" class="btn btn-danger btn-lg text-light">Cancel</a>
     </form>
   </div>
 </div>

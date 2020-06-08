@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-md-center container py-5 px-5 rounded border border-dark bg-light">
+  <div class="col-md-7 col-lg-5">
+    <h2 class="join-message">Edit your info:</h2>
+    <form method="POST" autocomplete="off">
+      {{ form.hidden_tag() }}
+
+      {% for field in form if field.widget.input_type != 'hidden' and field.name != 'password' %}
+        {% for error in field.errors %}
+          <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+        {{ field(placeholder=field.label.text, class="form-control my-2") }}
+      {% endfor %}
+      <p class="mt-3">To confirm changes, enter your password:</p>
+      {% if form.password.errors %}
+        {% for error in form.password.errors %}
+          <span class="text-danger">
+          {{ error }}
+        </span>
+        {% endfor %}
+      {% endif %}
+      {{ form.password(placeholder="Enter your password to confirm", class="form-control") }}
+      <button class="btn btn-success mt-3">Submit</button>
+      <a href="/users/{{session['username']}}" class="btn btn-danger text-light mt-3">Cancel</a>
+    </form>
+  </div>
+</div>
+{% endblock %}
