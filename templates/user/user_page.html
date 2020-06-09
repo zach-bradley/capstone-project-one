@@ -3,9 +3,17 @@
 <div class="container py-5 px-5 rounded border border-dark bg-light">
   <h2>User Details:</h2>
   <hr>
-  <h4>Username: {{user.username}}</h4>
-  <h4>Name: {{user.name}}</h4>
-  <h4>Weight: {{user.weight}} lbs</h4>
+  <div class="row">
+    <div class="col-md-6 col-sm-12">
+      <img class="img-fluid" src="{{user.user_image}}" alt="{{user.username}}">
+    </div>
+    <div class="col-md-6 col-sm-12">
+      <h4>Username: {{user.username}}</h4>
+      <h4>Name: {{user.name if user.name else "N/A"}}</h4>
+      <h4>Weight: {{user.weight if user.weight else "-"}} lbs</h4>      
+    </div>
+  </div>
+
   <div class="container mt-3">
     <a href="/users/{{user.username}}/edit" class="btn btn-primary">Edit</a>    
     <button data-toggle="modal" data-target="#deleteProfile" class="btn btn-danger">Delete</button>    

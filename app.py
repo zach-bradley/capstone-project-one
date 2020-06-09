@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, flash, redirect, session, jso
 from flask_debugtoolbar import DebugToolbarExtension
 from models import User, Recipe, Ingredient, connect_db, db
 from sqlalchemy.exc import IntegrityError
-from forms import UserAddForm, LoginForm, AddRecipeForm, EditUserForm
+from forms import UserAddForm, LoginForm, RecipeForm, EditUserForm
 from werkzeug.datastructures import MultiDict
 from User import *
 from Api import*
@@ -94,10 +94,7 @@ def edit_user(username):
   if form.validate_on_submit():
     user = User.authenticate(form.username.data, form.password.data)
     if user:
-      user.username = form.username.data
-      user.email = form.email.data
-      user.name = form.name.data
-      user.weight = form.weight.data
+      User_Methods.edit_User_Info(form, user)
       db.session.add(user)
       db.session.commit()
       flash("Information updated!", "success")
@@ -136,7 +133,7 @@ def all_recipes(username):
 @app.route("/users/<username>/recipes/add", methods=["GET","POST"])
 def add_recipe(username):
   user = User.query.filter_by(username=username).first()
-  form = AddRecipeForm()
+  form = RecipeForm()
   if form.validate_on_submit():
     try:
       name = request.form['name'];
@@ -160,7 +157,7 @@ def add_recipe(username):
 def edit_recipe(username,recipe_id):
   user = User.query.filter_by(username=username).first()
   recipe = Recipe.query.get(recipe_id)
-  form = AddRecipeForm()
+  form = RecipeForm()
   if form.validate_on_submit():
     delete_Ingr = Ingredient.query.filter_by(recipe_id=recipe.id).all()
     for ingr in delete_Ingr:

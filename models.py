@@ -19,6 +19,7 @@ class User(db.Model):
   email = db.Column(db.Text, nullable=False)
   name = db.Column(db.Text)
   weight = db.Column(db.Integer)
+  user_image = db.Column(db.Text, default="/static/images/default_user_image.jpg")
   recipes = db.relationship("Recipe", backref="user")
 
   def __repr__(self):
@@ -59,6 +60,7 @@ class Recipe(db.Model):
   fat = db.Column(db.Text)
   carbs = db.Column(db.Text)
   protein = db.Column(db.Text)
+  recipe_image = db.Column(db.Text, default="/static/images/default_recipe_image.jpg")
   user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
   ingredients = db.relationship("Ingredient", backref="recipe", cascade="all, delete-orphan")
 

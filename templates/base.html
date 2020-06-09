@@ -10,7 +10,7 @@
   <title>Macro Counter</title>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-5">
+  <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-5">
     <ul class="navbar-nav">
 
       {% if not session["username"] %}
@@ -34,7 +34,32 @@
       {% endif %}
 
     </ul>    
+  </nav> -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-5">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar">
+      {% if not session["username"] %}
+      <a class="navbar-brand" href="/">Macro Counter</a>
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="/login">Login</a>
+        </li>
+      {% else %}
+      <a class="navbar-brand" href="/users/{{session['username']}}/recipes">Macro Counter</a>
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="/users/{{session['username']}}">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+      {% endif %}
+      </ul>
+    </div>
   </nav>
+
   <div class="container">
     {% for category, message in get_flashed_messages(with_categories=True) %}
     <div class="alert alert-{{ category }}">{{ message }}</div>
