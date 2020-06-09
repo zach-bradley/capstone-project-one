@@ -4,7 +4,9 @@ from models import User, Recipe, Ingredient, connect_db, db
 from sqlalchemy.exc import IntegrityError
 from forms import UserAddForm, LoginForm, AddRecipeForm, EditUserForm
 from werkzeug.datastructures import MultiDict
-from helpers import *
+from User import *
+from Api import*
+from Recipes import *
 import requests
 
 app = Flask(__name__)
@@ -104,7 +106,7 @@ def edit_user(username):
       flash("Invalid credentials", "danger")
       return redirect(f"/users/{user.username}")
   else:
-    set_Edit_User_Info(form, user)
+    User_Methods.set_Edit_User_Info(form, user)
     return render_template("/user/edit_user.html", form=form, user=user)
 
 @app.route("/users/<username>/recipes/<int:recipe_id>")
@@ -139,8 +141,8 @@ def add_recipe(username):
     try:
       name = request.form['name'];
       ingredients = request.form['ingredients'].splitlines()
-      response = get_Data(name, ingredients)
-      recipe = process_Recipe(name, user, response)
+      response = Api.get_Data(name, ingredients)
+      recipe = Recipes.process_Recipe(name, user, response)
       db.session.add(recipe)
       db.session.commit()
       add_Ingredients = [Ingredient(amount=ingredient, recipe_id=recipe.id) for ingredient in ingredients]
@@ -166,8 +168,8 @@ def edit_recipe(username,recipe_id):
     db.session.commit()
     name = request.form['name']
     ingredients = request.form['ingredients'].splitlines()
-    response = get_Data(name, ingredients)
-    edit_Recipe_Data(recipe, name, response)
+    response = Api.get_Data(name, ingredients)
+    Recipe.edit_Recipe_Data(recipe, name, response)
     db.session.commit()
     add_Ingredients = [Ingredient(amount=ingredient, recipe_id=recipe.id) for ingredient in ingredients]
     db.session.add_all(add_Ingredients)
@@ -175,7 +177,7 @@ def edit_recipe(username,recipe_id):
     flash("Recipe updated!", "success")
     return redirect(f"/users/{user.username}/recipes/{recipe.id}")
   else:
-    set_Edit_Recipe_Info(form, recipe)
+    Recipe.set_Edit_Recipe_Info(form, recipe)
     return render_template("/recipes/edit_recipe.html", form=form, user=user, recipe=recipe)
 
 @app.route("/users/<username>/recipes/<int:recipe_id>/delete")
