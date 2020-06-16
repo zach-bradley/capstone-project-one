@@ -5,7 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from forms import UserAddForm, LoginForm, RecipeForm, EditUserForm
 from werkzeug.datastructures import MultiDict
 from User import *
-from Api import*
+from Macro_Api_Caller import*
 from Recipes import *
 import requests
 
@@ -109,7 +109,8 @@ def edit_user(username):
 @app.route("/users/<username>/recipes/<int:recipe_id>")
 def show_recipe(username, recipe_id):
   recipe = Recipe.query.get(recipe_id)
-  return render_template("/recipes/show_recipe.html", recipe=recipe)
+  net_carbs = int(recipe.carbs) - int(recipe.fiber)
+  return render_template("/recipes/show_recipe.html", recipe=recipe, net_carbs=net_carbs)
 
 @app.route("/users/<username>/delete")
 def delete_user(username):
@@ -137,9 +138,11 @@ def add_recipe(username):
   if form.validate_on_submit():
     try:
       name = request.form['name'];
+      image = request.form['recipe_image']
       ingredients = request.form['ingredients'].splitlines()
-      response = Api.get_Data(name, ingredients)
-      recipe = Recipes.process_Recipe(name, user, response)
+      response = Macro_Api_Caller.get_Data(name, ingredients)
+      print(response)
+      recipe = Recipe_Factory.process_Recipe(name, image, user, response)
       db.session.add(recipe)
       db.session.commit()
       add_Ingredients = [Ingredient(amount=ingredient, recipe_id=recipe.id) for ingredient in ingredients]
@@ -164,9 +167,10 @@ def edit_recipe(username,recipe_id):
       db.session.delete(ingr)
     db.session.commit()
     name = request.form['name']
+    recipe_image = request.form['recipe_image']
     ingredients = request.form['ingredients'].splitlines()
-    response = Api.get_Data(name, ingredients)
-    Recipe.edit_Recipe_Data(recipe, name, response)
+    response = Macro_Api_Caller.get_Data(name, ingredients)
+    Recipe_Factory.edit_Recipe_Data(recipe, recipe_image, name, response)
     db.session.commit()
     add_Ingredients = [Ingredient(amount=ingredient, recipe_id=recipe.id) for ingredient in ingredients]
     db.session.add_all(add_Ingredients)
@@ -174,7 +178,7 @@ def edit_recipe(username,recipe_id):
     flash("Recipe updated!", "success")
     return redirect(f"/users/{user.username}/recipes/{recipe.id}")
   else:
-    Recipe.set_Edit_Recipe_Info(form, recipe)
+    Recipe_Factory.set_Edit_Recipe_Info(form, recipe)
     return render_template("/recipes/edit_recipe.html", form=form, user=user, recipe=recipe)
 
 @app.route("/users/<username>/recipes/<int:recipe_id>/delete")
@@ -184,5 +188,5 @@ def delete_recipe(username,recipe_id):
   db.session.delete(recipe)
   db.session.commit()
   flash("Recipe deleted!", "success")
-  return redirect('/')
+  return redirect(f'/users/{user.username}/recipes')
 

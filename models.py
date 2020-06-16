@@ -9,6 +9,7 @@ def connect_db(app):
  db.app=app
  db.init_app(app)
 
+#TO DO seperate file
 class User(db.Model):
   """Model for users"""
 
@@ -60,6 +61,10 @@ class Recipe(db.Model):
   fat = db.Column(db.Text)
   carbs = db.Column(db.Text)
   protein = db.Column(db.Text)
+  carbs_from = db.Column(db.Text)
+  protein_from = db.Column(db.Text)
+  fat_from = db.Column(db.Text)
+  fiber = db.Column(db.Text)
   recipe_image = db.Column(db.Text, default="/static/images/default_recipe_image.jpg")
   user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
   ingredients = db.relationship("Ingredient", backref="recipe", cascade="all, delete-orphan")

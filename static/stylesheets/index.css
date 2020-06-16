@@ -3,3 +3,7 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
 }
+
+.collapse.show {
+  visibility: visible;
+}

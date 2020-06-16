@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container py-3 rounded border border-dark bg-light">
-  <div>
-    <a href="/users/{{session['username']}}"><i class="fa fa-arrow-left"></i> Back to all recipes</a>
+  <div class="jumbotron" style="background: url({{recipe.recipe_image}}) no-repeat center center;">
+      <a href="/users/{{session['username']}}/recipes" class="text-body bg-light border border-dark rounded p-1"><i class="fa fa-arrow-left"></i> Back to all recipes</a>
   </div>
   <div>
     <h1 class="d-inline">{{recipe.name}}</h1>
@@ -20,19 +20,28 @@
   </div>
 
   <div class="container">
-    <div class="row">
-      <div class="col-md-6 col-sm-12">
+    <div class="row row-eq-height">
+      <div class="col-md-4 col-sm-12">
         <h4 class="mt-4">Nutrition:</h4>
         <ul class="list-group">
-          <li class="list-group-item" data-amount={{recipe.calories}} id="calories">Calories: {{recipe.calories}}</li>
+          <li class="list-group-item" data-amount={{recipe.calories}} id="total_calories">Total Calories: {{recipe.calories}}
+            <a class="float-right" data-toggle="collapse" href="#calories" role="button" aria-expanded="false" aria-controls="calories"><i class="fa fa-angle-down" aria-hidden="true"></i></a>
+          </li>
+          <div class="collapse" id="calories">
+              <li class="list-group-item ml-4">Calories from fat: {{recipe.fat_from}}</li>
+              <li class="list-group-item ml-4">Calories from protein: {{recipe.protein_from}}</li>
+              <li class="list-group-item ml-4">Calories from carbs: {{recipe.carbs_from}}</li>         
+          </div>
           <li class="list-group-item" data-amount={{recipe.carbs}} id="carbs">Carbs: {{recipe.carbs}}g</li>
+            <ul class="list-group">
+              <li class="list-group-item ml-4">Net Carbs: {{net_carbs}}</li>
+            </ul>
           <li class="list-group-item" data-amount={{recipe.fat}} id="fat">Fat: {{recipe.fat}}g</li>
           <li class="list-group-item" data-amount={{recipe.protein}} id="protein">Protein: {{recipe.protein}}g</li>
         </ul>        
       </div>
-      <div class="col-md-6 col-sm-12" id="pie">
+      <div class="col-md-8 col-sm-12" id="pie">
         <h4 class="mt-4 text-center">Nutrition Breakdown:</h4>
-
       </div>
     </div>
 

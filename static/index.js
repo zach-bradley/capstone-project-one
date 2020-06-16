@@ -1,4 +1,4 @@
-let $calories =  parseInt($('#calories').attr("data-amount"))
+let $calories =  parseInt($('#total_calories').attr("data-amount"))
 let $carbs = parseInt($('#carbs').attr("data-amount"))
 let $fat = parseInt($('#fat').attr("data-amount"))
 let $protein = parseInt($('#fat').attr("data-amount"))
@@ -10,14 +10,23 @@ let makePie = function(){
   let $div = $("#pie");
   const width = $div[0]['offsetWidth'];
   const height = $div[0]["offsetHeight"];
-  const margin = 40;
-
+  let margin;
+  if(width < 400){
+    margin = 0
+  }
+  else {
+    margin = 40
+  }
+  console.log(width, height)
   const radius = Math.min(width, height) / 2 - margin;
 
   let svg = d3.select('#pie')
     .append("svg")
       .attr("width", width)
-      .attr("height", height)
+      .attr("height", height)    
+      .attr("preserveAspectRatio", "xMinYMin meet")
+      .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("class", "chart")
     .append("g")
       .attr("transform", "translate(" + width / 2 + "," +height / 2 + ")");
 
@@ -37,7 +46,7 @@ let makePie = function(){
   let data_ready = pie(d3.entries(data))
 
   svg
-    .selectAll('whatever')
+    .selectAll('chart')
     .data(data_ready)
     .enter()
     .append('path')
@@ -49,6 +58,7 @@ let makePie = function(){
     .attr("stroke", "black")
     .style("stroke-width", "2px")
     .style("opacity", 0.7)
+
 
   let arc = d3.arc()
     .innerRadius(radius * 0.6)       
@@ -97,8 +107,5 @@ let makePie = function(){
       .attr("text-anchor", "middle")
       .text(total +"g total") 
 }
-$(document).ready(makePie)
-$(window).resize(function(){
-  $("svg").detach();
-  makePie();
-})
+
+$(document).ready(makePie);
