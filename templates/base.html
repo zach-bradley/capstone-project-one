@@ -9,32 +9,7 @@
   <link rel="shortcut icon" href="/static/favicon.ico">
   <title>Macro Counter</title>
 </head>
-<body>
-  <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-5">
-    <ul class="navbar-nav">
-
-      {% if not session["username"] %}
-      <li class="nav-item">
-        <a class="nav-link active" href="/">Macro Counter</a>
-      </li>      
-      <li class="nav-item">
-        <a class="nav-link" href="/login">Login</a>
-      </li>
-
-      {% else %}
-      <li class="nav-item">
-        <a class="nav-link active" href="/users/{{session['username']}}/recipes">Macro Counter</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/users/{{session['username']}}">Profile</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/logout">Logout</a>
-      </li>
-      {% endif %}
-
-    </ul>    
-  </nav> -->
+<body class={% if classname %}{{classname}}{% else %}"base"{% endif %}>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-5">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>

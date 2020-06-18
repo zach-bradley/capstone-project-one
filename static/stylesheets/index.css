@@ -1,4 +1,4 @@
-body {
+.base {
   background-image: url("/static/images/louis-hansel-shotsoflouis-ZYjpgrFeWD0-unsplash.jpg");
   background-size: cover;
   background-repeat: no-repeat;
@@ -6,4 +6,10 @@ body {
 
 .collapse.show {
   visibility: visible;
+}
+
+.error{
+  background-image: url("/static/images/empty.jpg"); 
+  background-size: cover;
+  background-repeat: no-repeat;
 }

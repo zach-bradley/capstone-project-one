@@ -21,6 +21,10 @@ connect_db(app)
 # db.drop_all()
 # db.create_all()
 
+@app.errorhandler(404)
+def not_found(e):
+  return render_template("404.html", classname="error"), 404
+
 ###########################
 ### Auth routes
 ###########################
@@ -85,6 +89,7 @@ def logout():
 @app.route("/users/<username>")
 def user_page(username):
   user = User.query.filter_by(username=username).first()
+  User_Methods.check_username(username)
   return render_template("/user/user_page.html", user=user)
 
 @app.route("/users/<username>/edit", methods=["GET", "POST"])
