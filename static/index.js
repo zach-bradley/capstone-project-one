@@ -1,10 +1,10 @@
-let $calories =  parseInt($('#total_calories').attr("data-amount"))
+let $calories = parseInt($('#total_calories').attr("data-amount")) || 'none'
 let $carbs = parseInt($('#carbs').attr("data-amount"))
 let $fat = parseInt($('#fat').attr("data-amount"))
 let $protein = parseInt($('#fat').attr("data-amount"))
+
 let legendRectSize = 18;                                
 let legendSpacing = 4; 
-
 let total = $carbs + $fat + $protein;
 let list = [$carbs, $fat, $protein]
 
@@ -96,8 +96,10 @@ let makePie = function(){
           .text(function(d) { return d; });               
 }
 
-$(document).ready(makePie);
-$(window).on("resize", function(){
-  $("svg").remove();
-  makePie();
-});
+if($calories != 'none') {
+  $(document).ready(makePie);
+  $(window).on("resize", function(){
+    $("svg").remove();
+    makePie();
+  });
+}

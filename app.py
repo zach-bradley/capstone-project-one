@@ -4,16 +4,18 @@ from models import User, Recipe, Ingredient, connect_db, db
 from sqlalchemy.exc import IntegrityError
 from forms import UserAddForm, LoginForm, RecipeForm, EditUserForm
 from werkzeug.datastructures import MultiDict
+from config import S_KEY, DATABASE
 from User import *
 from Macro_Api_Caller import*
 from Recipes import *
 import requests
+import os
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres:///capstone_one'
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
-app.config['SECRET_KEY'] = 'borkborkiamdog'
+app.config['SECRET_KEY'] = S_KEY
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 debug = DebugToolbarExtension(app)
 
@@ -125,7 +127,8 @@ def delete_user(username):
   user = User.query.filter_by(username=username).first()
   db.session.delete(user)
   db.session.commit()
-  return redirect("/")
+  del session['username']
+  return redirect("/login")
 
 ###########################
 ### Recipe routes
