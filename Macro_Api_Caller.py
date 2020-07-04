@@ -13,7 +13,6 @@ class Macro_Api_Caller:
   def get_Data(self, name, ingr):
     to_send_data = self.serialize(name, ingr)
     api_data = requests.post(f"https://api.edamam.com/api/nutrition-details?app_id={API_ID}&app_key={API_KEY}", json = to_send_data)
-    print(api_data.json())
     return api_data.json()
 
 
