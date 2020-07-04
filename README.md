@@ -50,7 +50,7 @@ A macro counter with a graph to show the breakdown, a user account creation to s
 **f. What features make your site more than CRUD? Do you have any stretch
 goals?**
 
-Having the ability to store new recipes and users. Update existing recipes and users. Delete any recipe that a user wants or delete the users own account. 
+Having the ability to store new recipes and users. Update existing recipes and users. Delete any recipe that a user wants or delete the users own account.Add a chart to show the breakdown of macros
 
 I would want to be able to link to the fitness app API's in order to import the data into other apps for ease of use. Way stretch goal would be to create a custom API to show preparation for ingredients that can link right the the ingredient name and a pop up window
 

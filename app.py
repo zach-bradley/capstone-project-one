@@ -141,12 +141,14 @@ def add_recipe(username):
   user = User.query.filter_by(username=username).first()
   form = RecipeForm()
   if form.validate_on_submit():
-    try:
-      name = request.form['name'];
-      image = request.form['recipe_image']
-      ingredients = request.form['ingredients'].splitlines()
-      response = Macro_Api_Caller.get_Data(name, ingredients)
-      print(response)
+    name = request.form['name'];
+    image = request.form['recipe_image']
+    ingredients = request.form['ingredients'].splitlines()
+    response = Macro_Api_Caller.get_Data(Macro_Api_Caller, name, ingredients)
+    if 'error' in response:
+      flash("Ingredients not valid, make sure ingredients are on separate lines.", "danger")
+      return redirect(f"/users/{session['username']}/recipes/add")
+    else:
       recipe = Recipe_Factory.process_Recipe(name, image, user, response)
       db.session.add(recipe)
       db.session.commit()
@@ -155,9 +157,6 @@ def add_recipe(username):
       db.session.commit()
       flash("Recipe added successfully!", "success")
       return redirect(f"/users/{user.username}/recipes")
-    except NameError:
-      flash ("Ingredients must be on seperate lines", "danger")
-      return redirect(f"/users/{session['username']}/recipes/add")
   else: 
     return render_template("/recipes/add_recipe.html", form=form, user=user)
 

@@ -1,3 +1,6 @@
+html {
+  min-height: 100%;
+}
 .base {
   background-image: url("/static/images/louis-hansel-shotsoflouis-ZYjpgrFeWD0-unsplash.jpg");
   background-size: cover;
@@ -8,8 +11,24 @@
   visibility: visible;
 }
 
-.error{
+.error {
+  min-width: 100%;
+  min-height: 100%;
   background-image: url("/static/images/empty.jpg"); 
-  background-size: cover;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
+  overflow-y: hidden;
+  overflow-x: clip;
+}
+
+#pie {
+  min-height: 250px;
+}
+
+.div-custom {
+  max-width: 500px;
+}
+
+.recipe-container {
+  min-height: 80vh;
 }

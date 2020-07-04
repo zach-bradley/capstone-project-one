@@ -2,6 +2,8 @@ let $calories =  parseInt($('#total_calories').attr("data-amount"))
 let $carbs = parseInt($('#carbs').attr("data-amount"))
 let $fat = parseInt($('#fat').attr("data-amount"))
 let $protein = parseInt($('#fat').attr("data-amount"))
+let legendRectSize = 18;                                
+let legendSpacing = 4; 
 
 let total = $carbs + $fat + $protein;
 let list = [$carbs, $fat, $protein]
@@ -12,7 +14,7 @@ let makePie = function(){
   const height = $div[0]["offsetHeight"];
   let margin;
   if(width < 400){
-    margin = 0
+    margin = 30
   }
   else {
     margin = 40
@@ -51,61 +53,51 @@ let makePie = function(){
     .enter()
     .append('path')
     .attr('d', d3.arc()
-      .innerRadius(50)        
+      .innerRadius(65)        
       .outerRadius(radius)
     )
     .attr('fill', d => color(d.data.key))
+    .attr('data-legend', function(d) {return d.name})
     .attr("stroke", "black")
     .style("stroke-width", "2px")
     .style("opacity", 0.7)
 
 
   let arc = d3.arc()
-    .innerRadius(radius * 0.6)       
-    .outerRadius(radius * 0.8)
+    .innerRadius(radius * 1.5)       
+    .outerRadius(radius * 0.5)
 
   let outerArc = d3.arc()
-    .innerRadius(radius * 1.2)
-    .outerRadius(radius * 1.2)
+    .innerRadius(radius * 1.5)
+    .outerRadius(radius * 0.8)
+  
+  let legend = svg.selectAll('.data-legend')
+    .data(color.domain())
+    .enter()                                               
+          .append('g')                                           
+          .attr('class', 'legend')                              
+          .attr('transform', function(d, i) {                   
+            var height = legendRectSize + legendSpacing;         
+            var offset =  height * color.domain().length / 2;     
+            var horz = -2 * legendRectSize;                      
+            var vert = i * height - offset;                      
+            return 'translate(' + horz + ',' + vert + ')';       
+          });                                                    
 
-    svg
-    .selectAll('allPolylines')
-    .data(data_ready)
-    .enter()
-    .append('polyline')
-      .attr("stroke", "black")
-      .style("fill", "none")
-      .attr("stroke-width", 1)
-      .attr('points', function(d) {
-        var posA = arc.centroid(d) 
-        var posB = outerArc.centroid(d) 
-        var posC = outerArc.centroid(d); 
-        var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2 
-        posC[0] = radius * 1.1 * (midangle < Math.PI ? 1 : -1); 
-        return [posA, posB, posC]
-      })
-
-  // Add the polylines between chart and labels:
-  svg
-    .selectAll('allLabels')
-    .data(data_ready)
-    .enter()
-    .append('text')
-      .text( d =>  d.data.key + ": " + d.data.value +"g" )
-      .attr('transform', function(d) {
-          var pos = outerArc.centroid(d);
-          var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
-          pos[0] = radius * 1.2 * (midangle < Math.PI ? 1 : -1);
-          return 'translate(' + pos + ')';
-      })
-      .style('text-anchor', function(d) {
-          var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
-          return (midangle < Math.PI ? 'start' : 'end')
-      })
-
-  svg.append('text')
-      .attr("text-anchor", "middle")
-      .text(total +"g total") 
+        legend.append('rect')                                    
+          .attr('width', legendRectSize)                          
+          .attr('height', legendRectSize)                         
+          .style('fill', color)                                   
+          .style('stroke', color);                                
+          
+        legend.append('text')                                    
+          .attr('x', legendRectSize + legendSpacing)              
+          .attr('y', legendRectSize - legendSpacing)              
+          .text(function(d) { return d; });               
 }
 
 $(document).ready(makePie);
+$(window).on("resize", function(){
+  $("svg").remove();
+  makePie();
+});
