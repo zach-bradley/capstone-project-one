@@ -54,3 +54,6 @@ Having the ability to store new recipes and users. Update existing recipes and u
 
 I would want to be able to link to the fitness app API's in order to import the data into other apps for ease of use. Way stretch goal would be to create a custom API to show preparation for ingredients that can link right the the ingredient name and a pop up window
 
+# Project Details #
+
+
