@@ -1,5 +1,4 @@
 import requests
-from config import API_KEY, API_ID
 
 class Macro_Api_Caller:
   """Methods for dealing with the api"""
