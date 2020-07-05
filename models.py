@@ -9,7 +9,6 @@ def connect_db(app):
  db.app=app
  db.init_app(app)
 
-#TO DO seperate file
 class User(db.Model):
   """Model for users"""
 
