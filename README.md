@@ -56,4 +56,27 @@ I would want to be able to link to the fitness app API's in order to import the 
 
 # Project Details #
 
+My site title is Healthy You: [https://healthy-you-macro-counter.herokuapp.com/](https://healthy-you-macro-counter.herokuapp.com/ "Healthy You")
 
+My site is for counting macros and saving the macros from different recipes on your own account. You are able to go into different recipes and see the breakdown for each. 
+
+A few feature that I implemented:
+
+- Ability to store recipes (so users may access macros for that recipe again)
+- Ability to create, edit, and delete ones account (You are able to edit your email, weight, and name)
+- You have the ability to edit recipes (if you change a recipe than you have the updated macros to reference)
+- I used D3.js to provide a chart breakdown of the macros as well. 
+
+A standard user flow you look like this:
+
+1. Log on to the site 
+2. Create a new recipe
+3. Add your ingredients, a title for the recipe, and an optional image
+4. You are than redirected to the recipe show page to view information on that recipe
+
+
+The API itself is from Edamam. The only this I would want to improve about the API is have more specific errors. It only throws one type of error. 
+
+My technology stack is flask, sqlalchemy, d3, and postgresql. 
+
+I would like to eventually further improve my app by adding a daily count of macros and a quick add instead of having it just save macros. 
